@@ -1,6 +1,6 @@
 <template>
     <div class="row">
-        <div class="col-xl-12 mx-auto">
+        <div class="col-xl-10 mx-auto">
             <div class="card">
                 <div class="card-body">
                     <div class="p-4 border rounded">
