@@ -24,13 +24,20 @@
                         <div class="menu-title">Dashboard</div>
                     </a>
                     <ul>
-                        <li> <a href="index.html">
-                                <ion-icon name="ellipse-outline"></ion-icon>Default
-                            </a>
+                        <li>
+                            <router-link to="/">
+                                <ion-icon name="ellipse-outline"></ion-icon>Home
+                            </router-link>
                         </li>
-                        <li> <a href="index2.html">
-                                <ion-icon name="ellipse-outline"></ion-icon>Alternate
-                            </a>
+                        <li>
+                            <router-link to="/additem">
+                                <ion-icon name="ellipse-outline"></ion-icon>Agregar Item
+                            </router-link>
+                        </li>
+                        <li>
+                            <router-link to="/inventario">
+                                <ion-icon name="ellipse-outline"></ion-icon>Inventario
+                            </router-link>
                         </li>
                     </ul>
                 </li>
@@ -42,16 +49,32 @@
                         </div>
                         <div class="menu-title">User Profile</div>
                     </a>
-                </li>
+                </li>  
                 <li>
+                    <a href="pages-edit-profile.html">
+                        <div class="parent-icon">
+                            <ion-icon name="create-sharp"></ion-icon>
+                        </div>
+                        <div class="menu-title" >Edit Profile</div>
+                    </a>
+                </li>             
+            </ul>
+
+            <!-- <div>
+                <ul  class="metismenu">
+                    <li>
                     <a href="pages-edit-profile.html" id="abajo">
                         <div class="parent-icon">
                             <ion-icon name="create-sharp"></ion-icon>
                         </div>
                         <div class="menu-title" >Edit Profile</div>
                     </a>
-                </li>               
-            </ul>
+                </li>  
+                </ul>
+            </div> -->
+
+            
+
             <!--end navigation-->
         </aside>
         <!--end sidebar -->
@@ -213,6 +236,8 @@
                     </ul>
 
                 </div>
+
+
             </nav>
         </header>
         <!--end top header-->
@@ -241,6 +266,13 @@
 
 <style scoped>
 #abajo{
-    bottom: -70vh;
+    position: absolute;
+    bottom: 0;
+    height: 100%;
 }
+
+
+/* #menu{
+    border: solid 1px red;
+} */
 </style>
