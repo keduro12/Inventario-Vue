@@ -8,6 +8,10 @@
     <router-view></router-view>
   </div>
 
+  <div v-else-if="$route.name=='signup'">
+    <router-view></router-view>
+  </div>
+
   <div v-else>
     <MenuHeader></MenuHeader>
   </div>

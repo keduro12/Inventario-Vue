@@ -25,6 +25,11 @@ const routes = [{
         component: () => import("@/views/AddItem.vue")
     },
     {
+        path: "/signup",
+        name: "signup",
+        component: () => import("@/views/SingUp.vue")
+    },
+    {
         path: "/:pathMatch(.*)*",
         name: 'NotFound',
         component: () => import("@/views/NotFound.vue")
