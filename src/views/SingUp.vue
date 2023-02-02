@@ -9,22 +9,24 @@
                                 <h4>Sign Up</h4>
                                 <p>Crea una cuenta</p>
                             </div>
-                            <form class="form-body row g-3">
+                            <form class="form-body row g-3" @submit.prevent="handleSubmit">
                                 <div class="col-12">
                                     <label for="inputName" class="form-label">Nombre</label>
-                                    <input type="text" class="form-control" id="inputName">
+                                    <input type="text" class="form-control" id="inputName" v-model.trim="name">
                                 </div>
                                 <div class="col-12">
                                     <label for="inputEmail" class="form-label">Correo</label>
-                                    <input type="email" class="form-control" id="inputEmail">
+                                    <input type="email" class="form-control" id="inputEmail" v-model.trim="email">
                                 </div>
                                 <div class="col-12">
                                     <label for="inputPassword" class="form-label">Contraseña</label>
-                                    <input type="password" class="form-control" id="inputPassword">
+                                    <input type="password" class="form-control" id="inputPassword"
+                                        v-model.trim="password">
                                 </div>
                                 <div class="col-12 col-lg-12">
                                     <div class="d-grid">
-                                        <button type="button" class="btn btn-primary">Crear cuenta</button>
+                                        <button type="sunmit" class="btn btn-primary">Crear
+                                            cuenta</button>
                                     </div>
                                 </div>
                                 <div class="col-12 col-lg-12">
@@ -45,7 +47,9 @@
                                     </div>
                                 </div>
                                 <div class="col-12 col-lg-12 text-center">
-                                    <p class="mb-0">Ya tienes cuenta? <router-link to="/login">Iniciar Sesion</router-link></p>
+                                    <p class="mb-0">Ya tienes cuenta? <router-link to="/login">Iniciar Sesion
+                                        </router-link>
+                                    </p>
                                 </div>
                             </form>
                         </div>
@@ -64,7 +68,95 @@
 </template>
 
 <script setup>
+    import Swal from 'sweetalert2';
+    import {
+        useUserStore
+    } from "@/store/user.js"
+    import {
+        ref
+    } from 'vue'
+    import {
+        async
+    } from "@firebase/util";
 
+
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'bottom',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    })
+
+    const useStore = useUserStore();
+
+    const email = ref();
+    const password = ref();
+    const name = ref();
+
+    const handleSubmit =async () => {
+
+        if (email.value && password.value && name.value) {
+
+            if (password.value.length > 6) {
+
+                await useStore.registerUser(email.value, password.value)
+
+                if (useStore.orror == "auth/email-already-in-use") {
+                    Toast.fire({
+                    position: 'bottom',
+                    icon: 'error',
+                    title: "El email ya se encuentra registrado",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    });
+                }
+
+                if (useStore.orror == "auth/invalid-email") {
+                    Toast.fire({
+                    position: 'bottom',
+                    icon: 'error',
+                    title: "Ingrese un email valido",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    });
+                }
+
+            } else {
+                Toast.fire({
+                    position: 'bottom',
+                    icon: 'warning',
+                    title: 'La contraseña debe tener mas de 6 carateres',
+                    showConfirmButton: false,
+                    timer: 3000,
+                });
+            }
+
+
+        } else {
+
+            Toast.fire({
+                    position: 'bottom',
+                    icon: 'error',
+                    title: "Complete todos los campos",
+                    showConfirmButton: false,
+                    timer: 3000,
+            });
+        }
+        // Toast.fire({
+        //             position: 'bottom',
+        //             icon: 'error',
+        //             title: `${useStore.orror}`,
+        //             showConfirmButton: false,
+        //             timer: 3000,
+        //     });
+
+        // useStore.registerUser(email.value, password.value)
+    }
 </script>
 
 <style scoped>

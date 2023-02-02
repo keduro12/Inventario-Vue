@@ -1,15 +1,15 @@
 <template>
-    <div class="wrapper">
+  <div class="wrapper">
     <div class="container">
       <div class="row">
-        <div class="col-xl-6 col-lg-5 col-md-7 mx-auto  login" >
+        <div class="col-xl-6 col-lg-5 col-md-7 mx-auto  login">
           <div class="card radius-10">
             <div class="card-body p-4">
               <div class="text-center">
                 <h4>Iniciar Sesion</h4>
                 <p>Inicia sesión con tu cuenta</p>
               </div>
-              <form class="form-body row g-3" @submit.prevent="handleSubmit" >
+              <form class="form-body row g-3" @submit.prevent="handleSubmit">
                 <div class="col-12">
                   <label for="inputEmail" class="form-label">Correo</label>
                   <input type="email" class="form-control" id="inputEmail" v-model.trim="email">
@@ -33,7 +33,8 @@
                   </div>
                 </div>
                 <div class="col-12 col-lg-12 text-center">
-                  <p class="mb-0">No tienes cuenta? <router-link to="/signup">Crear Cuenta</router-link></p>
+                  <p class="mb-0">No tienes cuenta? <router-link to="/signup">Crear Cuenta</router-link>
+                  </p>
                 </div>
               </form>
             </div>
@@ -63,33 +64,80 @@
 </template>
 
 <script setup>
+  import Swal from "sweetalert2"
+  import {
+    useUserStore
+  } from "@/store/user.js"
+  import {
+    useRoute,
+    useRouter
+  } from "vue-router";
+  import {
+    ref
+  } from 'vue'
+  import {
+    async
+  } from "@firebase/util";
 
-import {useUserStore} from "@/store/user.js"
-import { useRoute, useRouter } from "vue-router";
-import {ref} from 'vue'
-import { async } from "@firebase/util";
 
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'bottom',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer)
+      toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+  })
 
+  const email = ref();
+  const password = ref();
 
-const email = ref();
-const password = ref();
+  const userStore = useUserStore();
+  const router = useRouter();
 
-const userStore = useUserStore();
-const router = useRouter();
+  const handleSubmit = async () => {
 
-const handleSubmit = async () =>{
+    if (!email.value || !password.value) {
+      Toast.fire({
+        position: 'bottom',
+        icon: 'error',
+        title: "Debe llenar los campos",
+        showConfirmButton: false,
+        timer: 3000,
+      })
 
-  // userStore.registerUser(email.value, password.value)
-  await userStore.startSesion(email.value, password.value)
-  console.log("antes");
-  router.push("/")
-  console.log("despues");
-}
+    } else {
+      await userStore.startSesion(email.value, password.value)
 
+      if (userStore.orror == "auth/wrong-password") {
+        Toast.fire({
+          position: 'bottom',
+          icon: 'error',
+          title: "Contraseña incorrecta",
+          showConfirmButton: false,
+          timer: 3000,
+        })
+      }
+
+      if (userStore.orror == "auth/user-not-found") {
+        Toast.fire({
+          position: 'bottom',
+          icon: 'error',
+          title: "Este usuario no se encuentra registrado",
+          showConfirmButton: false,
+          timer: 3000,
+        })
+      }
+
+    }
+  }
 </script>
 
 <style scoped>
-  .login{
-    margin-top: 150px;   
+  .login {
+    margin-top: 150px;
   }
 </style>

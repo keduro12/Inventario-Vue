@@ -226,7 +226,7 @@
                                             <div class="">
                                                 <ion-icon name="log-out-outline"></ion-icon>
                                             </div>
-                                            <div class="ms-3"><span>Logout</span></div>
+                                            <div class="ms-3" @click="userStore.finishSesion()"><span>Logout</span></div>
                                         </div>
                                     </a>
                                 </li>
@@ -261,6 +261,9 @@
 </template>
 
 <script setup>
+import {useUserStore} from "@/store/user.js"
+const userStore = useUserStore()
+
 
 </script>
 
