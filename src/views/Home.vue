@@ -84,6 +84,13 @@ const cantidad = ref();
 const fechaIngreso = ref();
 
 const handleSubmit =async () =>{
+    
+
+
+    console.log(useItem.documents[0])
+}
+
+onMounted(async() =>{
     nameItem.value = await useItem.documents[0].nameItem
     idItem.value = await useItem.documents[0].idItem
     sku.value = await useItem.documents[0].sku
@@ -91,17 +98,10 @@ const handleSubmit =async () =>{
     precioVenta.value = await useItem.documents[0].precioVenta
     cantidad.value = await useItem.documents[0].cantidad
     fechaIngreso.value = await useItem.documents[0].fechaIngreso
-
-
-    console.log(useItem.documents[0])
-}
-
-onMounted(async() =>{
-    
 })
 
 useItem.getItems();
-
+    
 </script>
 
 <style  scoped>
