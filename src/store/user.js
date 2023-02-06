@@ -1,16 +1,8 @@
-import {
-    defineStore
-} from "pinia";
-import {
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    signOut,
-    onAuthStateChanged
-} from "firebase/auth";
-import {
-    auth
-} from "@/firebaseConfig";
+import { defineStore } from "pinia";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "firebase/auth";
+import { auth } from "@/firebaseConfig";
 import router from "@/router";
+import {itemDatabase} from "@/store/itemDatabase.js"
 
 
 export const useUserStore = defineStore('user', {
@@ -66,6 +58,9 @@ export const useUserStore = defineStore('user', {
         },
 
         async finishSesion() {
+            const useDataBase = itemDatabase();
+            useDataBase.$reset();
+
             try {
                 await signOut(auth);
                 this.userData = null;
