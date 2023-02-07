@@ -3,7 +3,7 @@
         <div class="card-body">
             <div class="table-responsive">
                 <table id="example" class="table table-striped table-bordered" style="width:100%">
-                    <thead>
+                    <thead >
                         <tr>
                             <th>Item</th>
                             <th>Id Item</th>
@@ -12,24 +12,19 @@
                             <th>Precio Venta</th>
                             <th>Cantidad</th>
                             <th>Fecha de Ingreso</th>
+                            <th>Opción</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Tiger Nixon</td>
-                            <td>System Architect</td>
-                            <td>Edinburgh</td>
-                            <td>61</td>
-                            <td>2011/04/25</td>
-                            <td>$320,800</td>
-                        </tr>
-                        <tr>
-                            <td>Garrett Winters</td>
-                            <td>Accountant</td>
-                            <td>Tokyo</td>
-                            <td>63</td>
-                            <td>2011/07/25</td>
-                            <td>$170,750</td>
+                        <tr v-for="item in useDataBase.documents" :key="item.id">
+                            <td>{{item.nameItem}}</td>
+                            <td>{{item.idItem}}</td>
+                            <td>{{ item.sku }}</td>
+                            <td>{{item.precioUnitario}}</td>
+                            <td>{{ item.precioVenta }}</td>
+                            <td>{{ item.cantidad }}</td>
+                            <td>{{ item.fechaIngreso }}</td>
+                            
                         </tr>
                         
                     </tbody>
@@ -58,7 +53,6 @@
 
                         </div>
                     </tfoot>
-
                 </table>
             </div>
         </div>
@@ -66,7 +60,12 @@
 </template>
 
 <script setup>
+import {itemDatabase} from "@/store/itemDatabase.js"
 
+
+const useDataBase = itemDatabase();
+
+useDataBase.getItems()
 </script>
 
 <style scoped>

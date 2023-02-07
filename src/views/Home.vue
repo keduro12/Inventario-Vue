@@ -1,5 +1,5 @@
 <template>
-    <!-- <div>
+    <div>
         <ul v-for="item in useItem.documents" :key="item.id">
             <li>{{ item.cantidad}}</li>
             <li>{{ item.fechaIngreso }}</li>
@@ -8,7 +8,7 @@
 
 
         </ul>
-    </div> -->
+    </div>
 
     <div class="row margen">
         <div class="col-xl-9 mx-auto">
