@@ -24,21 +24,22 @@
                             <td>{{ item.precioVenta }}</td>
                             <td>{{ item.cantidad }}</td>
                             <td>{{ item.fechaIngreso }}</td>
-                            
-                            <div class="card-body"> 
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" router.push="/additem"
-                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round" class="feather feather-delete">
-                                    <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"></path>
-                                    <line x1="18" y1="9" x2="12" y2="15"></line>
-                                    <line x1="12" y1="9" x2="18" y2="15"></line>
-                                </svg>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="feather feather-edit">
-                                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                                </svg>
+
+                            <div class="card-body centericonos">
+                                <i class="cursorPointer mx-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop" >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        class="bi bi-pen-fill" viewBox="0 0 16 16">
+                                        <path
+                                            d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z" />
+                                    </svg>
+                                </i>
+                                <i class="cursorPointer mx-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                                        <path
+                                            d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z" />
+                                    </svg>
+                                </i>
                             </div>
 
                         </tr>
@@ -70,6 +71,83 @@
                         </div>
                     </tfoot>
                 </table>
+
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary" >
+                    Launch static backdrop modal
+                </button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
+                    tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="p-4 border rounded">
+                                    <form class="row g-3 needs-validation" novalidate @submit.prevent="handleSubmit">
+                                        <div class="col-md-6">
+                                            <label for="validationCustom01" class="form-label">Nombre Item</label>
+                                            <input type="text" class="form-control" id="validationCustom01"
+                                                v-model.trim="nameItem" required>
+                                            <div class="valid-feedback">Looks good!</div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="validationCustom02" class="form-label">Id Item</label>
+                                            <input type="text" class="form-control" id="validationCustom02"
+                                                v-model.trim="idItem" required>
+                                            <div class="valid-feedback">Looks good!</div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="validationCustomUsername" class="form-label">Codigo Item</label>
+                                            <div class="input-group has-validation">
+                                                <input type="text" class="form-control" id="validationCustomUsername"
+                                                    v-model.trim="sku" aria-describedby="inputGroupPrepend" required>
+                                                <div class="invalid-feedback">Please choose a username.</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="validationCustom03" class="form-label">Precio unitario</label>
+                                            <input type="text" class="form-control" id="validationCustom03"
+                                                v-model.trim="precioUnitario" required>
+                                            <div class="invalid-feedback">Please provide a valid city.</div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="validationCustom04" class="form-label">Precio Venta</label>
+                                            <input class="form-control" id="validationCustom04"
+                                                v-model.trim="precioVenta" required>
+                                            <div class="invalid-feedback">Please select a valid state.</div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="validationCustom05" class="form-label">Cantidad</label>
+                                            <input type="text" class="form-control" id="validationCustom05"
+                                                v-model.trim="cantidad" required>
+                                            <div class="invalid-feedback">Please provide a valid zip.</div>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <label for="validationCustom05" class="form-label">Fecha de ingreso</label>
+                                            <input type="date" class="form-control" id="validationCustom05"
+                                                v-model.trim="fechaIngreso" required>
+                                            <div class="invalid-feedback">Please provide a valid zip.</div>
+                                        </div>
+
+                                        <!-- <div class="col-12 centrado">
+                                            <button class="btn btn-primary" type="submit">Submit form</button>
+                                        </div> -->
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary">Understood</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -79,15 +157,62 @@
     import {
         itemDatabase
     } from "@/store/itemDatabase.js"
-    import { useRouter } from "vue-router";
+    import {
+        useRouter
+    } from "vue-router";
+    import { async } from "@firebase/util";
+    import {ref} from "vue"
+    import { onMounted } from "vue";
 
 
     const useDataBase = itemDatabase();
     const router = useRouter();
 
-    useDataBase.getItems()
+    useDataBase.getItems();
+
+
+
+
+
+
+
+const useItem = itemDatabase();
+
+
+const nameItem = ref("");
+const idItem = ref("");
+const sku = ref("");
+const precioUnitario = ref();
+const precioVenta = ref();
+const cantidad = ref();
+const fechaIngreso = ref();
+
+const handleSubmit =async () =>{
+    
+
+
+    console.log(useItem.documents[0])
+}
+
+onMounted(async() =>{
+    nameItem.value = await useItem.documents[1].nameItem
+    idItem.value = await useItem.documents[0].idItem
+    sku.value = await useItem.documents[0].sku
+    precioUnitario.value = await useItem.documents[0].precioUnitario
+    precioVenta.value = await useItem.documents[0].precioVenta
+    cantidad.value = await useItem.documents[0].cantidad
+    fechaIngreso.value = await useItem.documents[0].fechaIngreso
+})
+
+useItem.getItems();
 </script>
 
 <style scoped>
+    .centericonos {
+        text-align: center;
+    }
 
+    .cursorPointer {
+        cursor: pointer;
+    }
 </style>
