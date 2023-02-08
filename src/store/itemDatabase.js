@@ -1,4 +1,4 @@
-import { addDoc, collection, deleteDoc, doc, getDocs, query, where } from "firebase/firestore/lite"
+import { addDoc, collection, deleteDoc, doc, getDocs, query, where, getDoc } from "firebase/firestore/lite"
 import {defineStore} from "pinia"
 import { db } from "@/firebaseConfig"
 import { auth } from "@/firebaseConfig"
@@ -60,21 +60,23 @@ export const itemDatabase = defineStore("item", {
             }
         },
 
-        async showItem(id, ){
+        async showItem(id){
             try {
                 const docRef = await doc(db, "producto", id)
                 const docSnap = await getDoc(docRef);
 
-                return{
-                    nameItem: docSnap.data().nameItem,
-                    idItem: docSnap.data().idItem,
-                    sku: docSnap.data().sku,
-                    precioUnitario: docSnap.data().precioUnitario,
-                    precioVenta : docSnap.data().precioVenta,
-                    cantidad: docSnap.data().cantidad,
-                    // fechaIngreso: docSnap.data().fechaIngreso
-                    
-                }
+                return docSnap.data().nameItem;
+
+                // return{
+                //     nameItem: docSnap.data().nameItem,
+                //     idItem: docSnap.data().idItem,
+                //     sku: docSnap.data().sku,
+                //     precioUnitario: docSnap.data().precioUnitario,
+                //     precioVenta : docSnap.data().precioVenta,
+                //     cantidad: docSnap.data().cantidad,
+                //     // fechaIngreso: docSnap.data().fechaIngreso
+                // }
+
                 if (!docSnap.exists()) {
                     throw new Error('Ese documento no existe')
                 }
@@ -86,7 +88,7 @@ export const itemDatabase = defineStore("item", {
 
 
             } catch (error) {
-                console.log(error.messsage)
+                console.log(error)
             }finally{
 
             }

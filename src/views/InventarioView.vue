@@ -24,9 +24,10 @@
                             <td>{{ item.precioVenta }}</td>
                             <td>{{ item.cantidad }}</td>
                             <td>{{ item.fechaIngreso }}</td>
+                            <td>{{ item.id }}</td>
 
                             <div class="card-body centericonos">
-                                <i class="cursorPointer mx-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                <i class="cursorPointer mx-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop" @click="handleSubmit(item.id)">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                         class="bi bi-pen-fill" viewBox="0 0 16 16">
                                         <path
@@ -143,7 +144,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary"  @click="handleSubmit">Understood</button>
+                                <button type="button" class="btn btn-primary">Understood</button>
                             </div>
                         </div>
                     </div>
@@ -175,25 +176,28 @@
     const cantidad = ref();
     const fechaIngreso = ref();
 
-    const handleSubmit = async () => {
 
+    const handleSubmit = async (id) => {
 
+        // console.log(useItem.showItem(id.value + " hola"))
 
-        console.log(useItem.documents)
+        nameItem.value = await useItem.showItem(id)
+        idItem.value = await useItem.showItem(id)
+        sku.value = await useItem.showItem(id)
+        precioUnitario.value = await useItem.showItem(id)
+        precioVenta.value = await useItem.showItem(id)
+        cantidad.value = await useItem.showItem(id)
+        // fechaIngreso.value = await useItem.showItem(id)
+
+        // console.log(useItem.documents)
     }
 
-    onMounted(async () => {
-        nameItem.value = await useItem.showItem(useItem.documents.id)
-        idItem.value = await useItem.showItem(useItem.documents.id)
-        sku.value = await useItem.showItem(useItem.documents.id)
-        precioUnitario.value = await useItem.showItem(useItem.documents.id)
-        precioVenta.value = await useItem.showItem(useItem.documents.id)
-        cantidad.value = await useItem.showItem(useItem.documents.id)
-        fechaIngreso.value = await useItem.showItem(useItem.documents.id)
-    })
+    // onMounted(async () => {
+        
+    // })
 
     useItem.getItems();
-    useItem.showItem();
+   
 </script>
 
 <style scoped>
