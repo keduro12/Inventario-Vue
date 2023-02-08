@@ -182,6 +182,8 @@
         // console.log(useItem.showItem(id.value + " hola"))
 
         nameItem.value = await useItem.showItem(id)
+        const a = nameItem.value;
+        console.log(JSON.stringify(a.data) + " aaaaaaaaaaaa")
         idItem.value = await useItem.showItem(id)
         sku.value = await useItem.showItem(id)
         precioUnitario.value = await useItem.showItem(id)
