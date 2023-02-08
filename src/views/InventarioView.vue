@@ -179,16 +179,16 @@
 
     const handleSubmit = async (id) => {
 
-        // console.log(useItem.showItem(id.value + " hola"))
+    //     // console.log(useItem.showItem(id.value + " hola"))
+       const {nameI, item, codigo, unitario, venta, cantidadI, fecha} = await useItem.showItem(id)
 
-        nameItem.value = await useItem.showItem(id)
-        const a = nameItem.value;
-        console.log(JSON.stringify(a.data) + " aaaaaaaaaaaa")
-        idItem.value = await useItem.showItem(id)
-        sku.value = await useItem.showItem(id)
-        precioUnitario.value = await useItem.showItem(id)
-        precioVenta.value = await useItem.showItem(id)
-        cantidad.value = await useItem.showItem(id)
+       console.log(nameI)
+        // nameItem.value = await useItem.showItem(id)
+        // idItem.value = await useItem.showItem(id)
+        // sku.value = await useItem.showItem(id)
+        // precioUnitario.value = await useItem.showItem(id)
+        // precioVenta.value = await useItem.showItem(id)
+        // cantidad.value = await useItem.showItem(id)
         // fechaIngreso.value = await useItem.showItem(id)
 
         // console.log(useItem.documents)
