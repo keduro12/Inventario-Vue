@@ -16,7 +16,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="item in useDataBase.documents" :key="item.id">
+                        <tr v-for="item in useItem.documents" :key="item.id">
                             <td>{{item.nameItem}}</td>
                             <td>{{item.idItem}}</td>
                             <td>{{ item.sku }}</td>
@@ -26,7 +26,7 @@
                             <td>{{ item.fechaIngreso }}</td>
 
                             <div class="card-body centericonos">
-                                <i class="cursorPointer mx-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop" >
+                                <i class="cursorPointer mx-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                         class="bi bi-pen-fill" viewBox="0 0 16 16">
                                         <path
@@ -73,7 +73,7 @@
                 </table>
 
                 <!-- Button trigger modal -->
-                <button type="button" class="btn btn-primary" >
+                <button type="button" class="btn btn-primary">
                     Launch static backdrop modal
                 </button>
 
@@ -89,7 +89,7 @@
                             </div>
                             <div class="modal-body">
                                 <div class="p-4 border rounded">
-                                    <form class="row g-3 needs-validation" novalidate @submit.prevent="handleSubmit">
+                                    <form class="row g-3 needs-validation" novalidate>
                                         <div class="col-md-6">
                                             <label for="validationCustom01" class="form-label">Nombre Item</label>
                                             <input type="text" class="form-control" id="validationCustom01"
@@ -143,7 +143,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary">Understood</button>
+                                <button type="button" class="btn btn-primary"  @click="handleSubmit">Understood</button>
                             </div>
                         </div>
                     </div>
@@ -154,57 +154,46 @@
 </template>
 
 <script setup>
-    import {
-        itemDatabase
-    } from "@/store/itemDatabase.js"
-    import {
-        useRouter
-    } from "vue-router";
-    import { async } from "@firebase/util";
+    import {itemDatabase} from "@/store/itemDatabase.js"
+    import {useRouter} from "vue-router";
+    import {async} from "@firebase/util";
     import {ref} from "vue"
-    import { onMounted } from "vue";
+    import {
+        onMounted
+} from "vue";
 
-
-    const useDataBase = itemDatabase();
     const router = useRouter();
 
-    useDataBase.getItems();
+    const useItem = itemDatabase();
+
+
+    const nameItem = ref("");
+    const idItem = ref("");
+    const sku = ref("");
+    const precioUnitario = ref();
+    const precioVenta = ref();
+    const cantidad = ref();
+    const fechaIngreso = ref();
+
+    const handleSubmit = async () => {
 
 
 
+        console.log(useItem.documents)
+    }
 
+    onMounted(async () => {
+        nameItem.value = await useItem.showItem(useItem.documents.id)
+        idItem.value = await useItem.showItem(useItem.documents.id)
+        sku.value = await useItem.showItem(useItem.documents.id)
+        precioUnitario.value = await useItem.showItem(useItem.documents.id)
+        precioVenta.value = await useItem.showItem(useItem.documents.id)
+        cantidad.value = await useItem.showItem(useItem.documents.id)
+        fechaIngreso.value = await useItem.showItem(useItem.documents.id)
+    })
 
-
-
-const useItem = itemDatabase();
-
-
-const nameItem = ref("");
-const idItem = ref("");
-const sku = ref("");
-const precioUnitario = ref();
-const precioVenta = ref();
-const cantidad = ref();
-const fechaIngreso = ref();
-
-const handleSubmit =async () =>{
-    
-
-
-    console.log(useItem.documents[0])
-}
-
-onMounted(async() =>{
-    nameItem.value = await useItem.documents[1].nameItem
-    idItem.value = await useItem.documents[0].idItem
-    sku.value = await useItem.documents[0].sku
-    precioUnitario.value = await useItem.documents[0].precioUnitario
-    precioVenta.value = await useItem.documents[0].precioVenta
-    cantidad.value = await useItem.documents[0].cantidad
-    fechaIngreso.value = await useItem.documents[0].fechaIngreso
-})
-
-useItem.getItems();
+    useItem.getItems();
+    useItem.showItem();
 </script>
 
 <style scoped>
