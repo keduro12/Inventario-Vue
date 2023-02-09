@@ -45,7 +45,7 @@
                             </div>
                             
                             <div class="col-12 centrado">
-                                <button class="btn btn-primary" type="submit">Submit form</button>
+                                <button class="btn btn-primary" type="submit">Agregar</button>
                             </div>
                         </form>
                     </div>
@@ -79,6 +79,19 @@ const handleSubmit = () =>{
     console.log(nameItem.value, idItem.value, sku.value, precioUnitario.value, precioVenta.value, cantidad.value, fechaIngreso.value)
 }
 
+
+
+// if(handleSubmit()){
+        
+//         nameItem.value = null;
+//         idItem.value = null;
+//         sku.value = null;
+//         precioUnitario.value = null;
+//         precioVenta.value = null;
+//         cantidad.value = null;
+//         fechaIngreso.value = null;
+
+//     }
 </script>
 
 <style scoped>
