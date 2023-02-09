@@ -33,7 +33,7 @@
                                             d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z" />
                                     </svg>
                                 </i>
-                                <i class="cursorPointer mx-2">
+                                <i class="cursorPointer mx-2" v-on:click="useItem.deleteItem(item.id)">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                         class="bi bi-trash3-fill" viewBox="0 0 16 16">
                                         <path
@@ -166,9 +166,10 @@
     const precioVenta_1 = ref();
     const cantidad_1 = ref();
     const fechaIngreso_1 = ref();
-
-
+    
     const handleSubmit = async (id) => {
+
+        console.log(useItem.clear + 'fdfdsfd')
 
        const {nameItem, idItem, sku, precioUnitario, precioVenta, cantidad, fechaIngreso} = await useItem.showItem(id)
 
@@ -179,9 +180,25 @@
         precioVenta_1.value = precioVenta,
         cantidad_1.value = cantidad,
         fechaIngreso_1.value = fechaIngreso
+
+        
+    }
+
+    
+    
+    if(!useItem.clear){
+        nameItem_1.value  = null,
+        idItem_1.value = null,
+        sku_1.value = null,
+        precioUnitario_1.value = null,
+        precioVenta_1.value = null,
+        cantidad_1.value = null,
+        fechaIngreso_1.value = null 
     }
 
     useItem.getItems();
+
+
    
 </script>
 

@@ -6,6 +6,7 @@ import { auth } from "@/firebaseConfig"
 export const itemDatabase = defineStore("item", {
     state: () => ({
         documents: [],
+        clear: false,
     }),
 
 
@@ -37,6 +38,7 @@ export const itemDatabase = defineStore("item", {
 
         async setItem(nameItem, idItem, sku, precioUnitario, precioVenta, cantidad, fechaIngreso){
             try {
+                this.clear = false;
                 const objectDoc = {
                     nameItem: nameItem,
                     idItem: idItem,
@@ -48,6 +50,8 @@ export const itemDatabase = defineStore("item", {
                     user: auth.currentUser.uid
                 };
                 const docRef = await addDoc(collection(db, "producto"), objectDoc)
+
+
                 // console.log(docRef)
                 this.documents.push({
                     ...objectDoc,
@@ -56,7 +60,7 @@ export const itemDatabase = defineStore("item", {
             } catch (error) {
                 console.log(error)
             }finally{
-                
+                this.clear = true;
             }
         },
 
@@ -89,7 +93,7 @@ export const itemDatabase = defineStore("item", {
             } catch (error) {
                 console.log(error)
             }finally{
-
+                
             }
         },
 
