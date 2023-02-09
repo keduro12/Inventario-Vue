@@ -15,7 +15,7 @@
                 </div>
             </div>
             <!--navigation-->
-            <ul class="metismenu" id="menu">
+            <ul class="metismenu">
                 <li>
                     <a href="javascript:;" class="has-arrow">
                         <div class="parent-icon">
@@ -226,7 +226,7 @@
                                             <div class="">
                                                 <ion-icon name="log-out-outline"></ion-icon>
                                             </div>
-                                            <div class="ms-3" @click="userStore.finishSesion()"><span>Logout</span></div>
+                                            <div class="ms-3 menu" @click="userStore.finishSesion()"><span class="menu1">Logout</span></div>
                                         </div>
                                     </a>
                                 </li>
@@ -275,7 +275,13 @@ const userStore = useUserStore()
 }
 
 
-/* #menu{
+.menu{
     border: solid 1px red;
+    width: 100%;
+}
+
+/* .menu1{
+    border: solid 1px green;
+    width: 100%;
 } */
 </style>

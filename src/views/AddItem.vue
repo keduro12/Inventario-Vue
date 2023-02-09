@@ -59,6 +59,7 @@
 <script setup>
 
 import {itemDatabase} from "@/store/itemDatabase.js"
+import { async } from "@firebase/util";
 import {ref} from "vue"
 
 const useItemData = itemDatabase();
@@ -72,12 +73,25 @@ const cantidad = ref();
 const fechaIngreso = ref();
 
 
-const handleSubmit = () =>{
-    console.log(nameItem.value, idItem.value, sku.value, precioUnitario.value, precioVenta.value, cantidad.value, fechaIngreso.value)
-    useItemData.setItem(nameItem.value, idItem.value, sku.value, precioUnitario.value, precioVenta.value, cantidad.value, fechaIngreso.value)
+const handleSubmit = async () =>{
+    // console.log(nameItem.value, idItem.value, sku.value, precioUnitario.value, precioVenta.value, cantidad.value, fechaIngreso.value)
+    await useItemData.setItem(nameItem.value, idItem.value, sku.value, precioUnitario.value, precioVenta.value, cantidad.value, fechaIngreso.value)
 
     console.log(nameItem.value, idItem.value, sku.value, precioUnitario.value, precioVenta.value, cantidad.value, fechaIngreso.value)
+    console.log(useItemData.clear)
+
+    if(useItemData.clear){
+        nameItem.value  = null,
+        idItem.value = null,
+        sku.value = null,
+        precioUnitario.value = null,
+        precioVenta.value = null,
+        cantidad.value = null,
+        fechaIngreso.value = null 
+    }
 }
+console.log(useItemData.clear + " afuera")
+
 
 
 
@@ -92,6 +106,7 @@ const handleSubmit = () =>{
 //         fechaIngreso.value = null;
 
 //     }
+    
 </script>
 
 <style scoped>

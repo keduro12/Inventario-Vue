@@ -166,10 +166,9 @@
     const precioVenta_1 = ref();
     const cantidad_1 = ref();
     const fechaIngreso_1 = ref();
-    
-    const handleSubmit = async (id) => {
 
-        console.log(useItem.clear + 'fdfdsfd')
+
+    const handleSubmit = async (id) => {
 
        const {nameItem, idItem, sku, precioUnitario, precioVenta, cantidad, fechaIngreso} = await useItem.showItem(id)
 
@@ -180,25 +179,9 @@
         precioVenta_1.value = precioVenta,
         cantidad_1.value = cantidad,
         fechaIngreso_1.value = fechaIngreso
-
-        
-    }
-
-    
-    
-    if(!useItem.clear){
-        nameItem_1.value  = null,
-        idItem_1.value = null,
-        sku_1.value = null,
-        precioUnitario_1.value = null,
-        precioVenta_1.value = null,
-        cantidad_1.value = null,
-        fechaIngreso_1.value = null 
     }
 
     useItem.getItems();
-
-
    
 </script>
 
