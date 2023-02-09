@@ -24,8 +24,7 @@
                             <td>{{ item.precioVenta }}</td>
                             <td>{{ item.cantidad }}</td>
                             <td>{{ item.fechaIngreso }}</td>
-                            <td>{{ item.id }}</td>
-
+                            
                             <div class="card-body centericonos">
                                 <i class="cursorPointer mx-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop" @click="handleSubmit(item.id)">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -81,7 +80,7 @@
                 <!-- Modal -->
                 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
                     tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                    <div class="modal-dialog">
+                    <div class="modal-dialog modal-xl">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
@@ -89,50 +88,50 @@
                                     aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <div class="p-4 border rounded">
+                                <div class="p-3 border rounded">
                                     <form class="row g-3 needs-validation" novalidate>
                                         <div class="col-md-6">
                                             <label for="validationCustom01" class="form-label">Nombre Item</label>
                                             <input type="text" class="form-control" id="validationCustom01"
-                                                v-model.trim="nameItem" required>
+                                                v-model.trim="nameItem_1" required>
                                             <div class="valid-feedback">Looks good!</div>
                                         </div>
                                         <div class="col-md-3">
                                             <label for="validationCustom02" class="form-label">Id Item</label>
                                             <input type="text" class="form-control" id="validationCustom02"
-                                                v-model.trim="idItem" required>
+                                                v-model.trim="idItem_1" required>
                                             <div class="valid-feedback">Looks good!</div>
                                         </div>
                                         <div class="col-md-3">
                                             <label for="validationCustomUsername" class="form-label">Codigo Item</label>
                                             <div class="input-group has-validation">
                                                 <input type="text" class="form-control" id="validationCustomUsername"
-                                                    v-model.trim="sku" aria-describedby="inputGroupPrepend" required>
+                                                    v-model.trim="sku_1" aria-describedby="inputGroupPrepend" required>
                                                 <div class="invalid-feedback">Please choose a username.</div>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <label for="validationCustom03" class="form-label">Precio unitario</label>
                                             <input type="text" class="form-control" id="validationCustom03"
-                                                v-model.trim="precioUnitario" required>
+                                                v-model.trim="precioUnitario_1" required>
                                             <div class="invalid-feedback">Please provide a valid city.</div>
                                         </div>
                                         <div class="col-md-4">
                                             <label for="validationCustom04" class="form-label">Precio Venta</label>
                                             <input class="form-control" id="validationCustom04"
-                                                v-model.trim="precioVenta" required>
+                                                v-model.trim="precioVenta_1" required>
                                             <div class="invalid-feedback">Please select a valid state.</div>
                                         </div>
                                         <div class="col-md-3">
                                             <label for="validationCustom05" class="form-label">Cantidad</label>
                                             <input type="text" class="form-control" id="validationCustom05"
-                                                v-model.trim="cantidad" required>
+                                                v-model.trim="cantidad_1" required>
                                             <div class="invalid-feedback">Please provide a valid zip.</div>
                                         </div>
                                         <div class="col-md-5">
                                             <label for="validationCustom05" class="form-label">Fecha de ingreso</label>
                                             <input type="date" class="form-control" id="validationCustom05"
-                                                v-model.trim="fechaIngreso" required>
+                                                v-model.trim="fechaIngreso_1" required>
                                             <div class="invalid-feedback">Please provide a valid zip.</div>
                                         </div>
 
@@ -159,44 +158,33 @@
     import {useRouter} from "vue-router";
     import {async} from "@firebase/util";
     import {ref} from "vue"
-    import {
-        onMounted
-} from "vue";
+    import {onMounted} from "vue";
 
     const router = useRouter();
-
     const useItem = itemDatabase();
 
 
-    const nameItem = ref("");
-    const idItem = ref("");
-    const sku = ref("");
-    const precioUnitario = ref();
-    const precioVenta = ref();
-    const cantidad = ref();
-    const fechaIngreso = ref();
+    const nameItem_1 = ref("");
+    const idItem_1 = ref("");
+    const sku_1 = ref("");
+    const precioUnitario_1 = ref();
+    const precioVenta_1 = ref();
+    const cantidad_1 = ref();
+    const fechaIngreso_1 = ref();
 
 
     const handleSubmit = async (id) => {
 
-    //     // console.log(useItem.showItem(id.value + " hola"))
-       const {nameI, item, codigo, unitario, venta, cantidadI, fecha} = await useItem.showItem(id)
+       const {nameItem, idItem, sku, precioUnitario, precioVenta, cantidad, fechaIngreso} = await useItem.showItem(id)
 
-       console.log(nameI)
-        // nameItem.value = await useItem.showItem(id)
-        // idItem.value = await useItem.showItem(id)
-        // sku.value = await useItem.showItem(id)
-        // precioUnitario.value = await useItem.showItem(id)
-        // precioVenta.value = await useItem.showItem(id)
-        // cantidad.value = await useItem.showItem(id)
-        // fechaIngreso.value = await useItem.showItem(id)
-
-        // console.log(useItem.documents)
+        nameItem_1.value  = nameItem,
+        idItem_1.value = idItem,
+        sku_1.value = sku,
+        precioUnitario_1.value = precioUnitario,
+        precioVenta_1.value = precioVenta,
+        cantidad_1.value = cantidad,
+        fechaIngreso_1.value = fechaIngreso
     }
-
-    // onMounted(async () => {
-        
-    // })
 
     useItem.getItems();
    

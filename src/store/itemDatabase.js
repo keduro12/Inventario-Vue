@@ -64,30 +64,17 @@ export const itemDatabase = defineStore("item", {
             try {
                 const docRef = await doc(db, "producto", id)
                 const docSnap = await getDoc(docRef);
-
-                // return docSnap.data().nameItem, docSnap.data().idItem;
-
-                // return{
-                    
-                //     nameItem: docSnap.data().nameItem,
-                //     idItem: docSnap.data().idItem,
-                //     sku: docSnap.data().sku,
-                //     precioUnitario: docSnap.data().precioUnitario,
-                //     precioVenta : docSnap.data().precioVenta,
-                //     cantidad: docSnap.data().cantidad,
-                //     fechaIngreso: docSnap.data().fechaIngreso,
-                //     // ...docSnap
-                // }
-
+                
                 return{
-                    nameItem: 'docSnap.data().nameItem',
-                    idItem: 'docSnap.data().idItem',
-                    sku: 'docSnap.data().sku',
-                    precioUnitario: 'docSnap.data().precioUnitario',
-                    precioVenta : 'docSnap.data().precioVenta',
-                    cantidad: 'docSnap.data().cantidad',
-                    fechaIngreso: 'docSnap.data().fechaIngreso',
+                    nameItem: docSnap.data().nameItem,
+                    idItem: docSnap.data().idItem,
+                    sku: docSnap.data().sku,
+                    precioUnitario: docSnap.data().precioUnitario,
+                    precioVenta : docSnap.data().precioVenta,
+                    cantidad: docSnap.data().cantidad,
+                    fechaIngreso: docSnap.data().fechaIngreso,
                 }
+
 
                 if (!docSnap.exists()) {
                     throw new Error('Ese documento no existe')
