@@ -1,4 +1,4 @@
-import { addDoc, collection, deleteDoc, doc, getDocs, query, where, getDoc } from "firebase/firestore/lite"
+import { addDoc, collection, deleteDoc, doc, getDocs, query, where, getDoc, updateDoc } from "firebase/firestore/lite"
 import {defineStore} from "pinia"
 import { db } from "@/firebaseConfig"
 import { auth } from "@/firebaseConfig"
@@ -7,6 +7,7 @@ export const itemDatabase = defineStore("item", {
     state: () => ({
         documents: [],
         clear: false,
+        orror: false,
     }),
 
 
@@ -58,6 +59,7 @@ export const itemDatabase = defineStore("item", {
                     id: docRef.id,
                 });
             } catch (error) {
+                this.orror = error.code
                 console.log(error)
             }finally{
                 this.clear = true;
@@ -66,7 +68,7 @@ export const itemDatabase = defineStore("item", {
 
         async showItem(id){
             try {
-                const docRef = await doc(db, "producto", id)
+                const docRef = doc(db, "producto", id)
                 const docSnap = await getDoc(docRef);
                 
                 return{
@@ -91,9 +93,48 @@ export const itemDatabase = defineStore("item", {
 
 
             } catch (error) {
+
                 console.log(error)
             }finally{
                 
+            }
+        },
+
+        async updateItem(id, nameItem, idItem, sku, precioUnitario, precioVenta, cantidad, fechaIngreso){
+            try {
+                const docRef = doc(db, "producto", id)
+                const docSnap = await getDoc(docRef);
+
+                if (!docSnap.exists()) {
+                    throw new Error('Ese documento no existe')
+                }
+
+                if (auth.currentUser.uid !== docSnap.data().user) {
+                    throw new Error("Ese documento no te pertenece")
+                }
+
+
+                await updateDoc(docRef, {
+                    nameItem: nameItem,
+                    idItem: idItem,
+                    sku: sku,
+                    precioUnitario: precioUnitario,
+                    precioVenta : precioVenta,
+                    cantidad: cantidad,
+                    fechaIngreso: fechaIngreso,
+                })
+
+                this.documents = this.documents.map((item) => 
+                    item.id === id ? {...item, nameItem: nameItem,
+                    idItem: idItem,
+                    sku: sku,
+                    precioUnitario: precioUnitario,
+                    precioVenta : precioVenta,
+                    cantidad: cantidad,
+                    fechaIngreso: fechaIngreso} : item
+                );
+            } catch (error) {
+                console.log(error.messsage)
             }
         },
 

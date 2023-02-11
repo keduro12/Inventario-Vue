@@ -21,6 +21,4 @@ const useItem = itemDatabase();
 </script>
 
 <style  scoped>
-
-
 </style>

@@ -221,12 +221,12 @@
                                     <hr class="dropdown-divider">
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="javascript:;">
+                                    <a class="dropdown-item" href="javascript:;" @click="userStore.finishSesion()">
                                         <div class="d-flex align-items-center">
                                             <div class="">
                                                 <ion-icon name="log-out-outline"></ion-icon>
                                             </div>
-                                            <div class="ms-3 menu" @click="userStore.finishSesion()"><span class="menu1">Logout</span></div>
+                                            <div class="ms-3"><span>Logout</span></div>
                                         </div>
                                     </a>
                                 </li>
@@ -275,10 +275,10 @@ const userStore = useUserStore()
 }
 
 
-.menu{
+/* .menu{
     border: solid 1px red;
     width: 100%;
-}
+} */
 
 /* .menu1{
     border: solid 1px green;
