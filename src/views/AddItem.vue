@@ -65,7 +65,7 @@
 </template>
 
 <script setup>
-    // import FormularioData from "@/components/FormularioData.vue"
+    import FormularioData from "@/components/FormularioData.vue"
     import {
         useVuelidate
     } from '@vuelidate/core'
