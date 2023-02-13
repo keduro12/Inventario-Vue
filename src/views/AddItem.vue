@@ -6,10 +6,10 @@
                     <div class="p-4 border rounded">
                         <form class="row g-3 needs-validation" novalidate @submit.prevent="handleSubmit()">
                             <div class="col-md-6">
-                                <label for="validationCustom01" class="form-label">Nombre Item</label>
-                                <input type="text" class="form-control" id="validationCustom01" v-model.trim="nameItem"
-                                    required>
-                                <div class="valid-feedback">Looks good!</div>
+                                <span v-for="error in v$.nameItem.$errors" :key="error.$uid">{{ error.$message }}</span> 
+                                <input type="text" class="form-control" id="validationCustom01" v-model.trim="nameItem" required>
+                                <label for="validationCustom01" class="form-label">Nombre Item</label>  
+                                                                
                             </div>
                             <div class="col-md-3">
                                 <label for="validationCustom02" class="form-label">Id Item</label>
@@ -50,9 +50,12 @@
                             </div>
 
                             <div class="col-12 centrado">
-                                <button class="btn btn-primary" type="submit">Agregar</button>
+                                <button class="btn btn-primary" type="submit" >Agregar</button>
                             </div>
                         </form>
+
+                        <!-- <FormularioData :nameItem="nameItem" :idItem="idItem"  :sku="sku" :precioUnitario="precioUnitario" :precioVenta="precioVenta" :cantidad="cantidad" :fechaIngreso="fechaIngreso" 
+                            @evento="handleSubmit"/> -->
                     </div>
                 </div>
             </div>
@@ -62,6 +65,11 @@
 </template>
 
 <script setup>
+    // import FormularioData from "@/components/FormularioData.vue"
+    import {
+        useVuelidate
+    } from '@vuelidate/core'
+    import { required } from '@vuelidate/validators'
     import {
         itemDatabase
     } from "@/store/itemDatabase.js"
@@ -69,7 +77,8 @@
         async
     } from "@firebase/util";
     import {
-        ref
+        ref,
+        computed, reactive
     } from "vue"
     import Swal from "sweetalert2";
 
@@ -86,61 +95,144 @@
     })
 
     const useItemData = itemDatabase();
+    
+    const formData = reactive({
+        nameItem: "",
+        idItem: "",
+        sku: "",
+        precioUnitario: "",
+        precioVenta: "",
+        cantidad: "",
+        fechaIngreso: "",
+    })
 
-    const nameItem = ref("");
-    const idItem = ref("");
-    const sku = ref("");
-    const precioUnitario = ref();
-    const precioVenta = ref();
-    const cantidad = ref();
-    const fechaIngreso = ref();
+    const rules = {
+        nameItem: { required },
+        idItem: { required },
+        sku: { required },
+        precioUnitario: { required },
+        precioVenta: { required },
+        cantidad: { required },
+        fechaIngreso: { required },
+    }
+
+    const v$ = useVuelidate(rules, formData)
 
     const handleSubmit = async () => {
 
-        if (!nameItem.value || !idItem.value || !sku.value || !precioUnitario.value || !precioVenta.value || !
-            cantidad.value || !fechaIngreso.value) {
+        const result = await v$.value.$validate()
 
-            Toast.fire({
-                position: 'bottom',
-                icon: 'error',
-                title: "Debe llenar todos los campos",
-                showConfirmButton: false,
-                timer: 3000,
-            })
+        console.log(v$ + " .... " + result)
 
-        } else {
-            await useItemData.setItem(nameItem.value, idItem.value, sku.value, precioUnitario.value, precioVenta
-                .value, cantidad.value, fechaIngreso.value)
+        if(result){
+            alert("formulario exitoso")
+        }else{
+            alert("formulario fallo")
 
-            if (useItemData.clear) {
-                Toast.fire({
-                    position: 'bottom',
-                    icon: 'success',
-                    title: "Item agregado con exito!!!",
-                    showConfirmButton: false,
-                    timer: 3000,
-                })
-
-                nameItem.value = null,
-                idItem.value = null,
-                sku.value = null,
-                precioUnitario.value = null,
-                precioVenta.value = null,
-                cantidad.value = null,
-                fechaIngreso.value = null
-
-            }
-
-            if(useItemData.orror){
-                Toast.fire({
-                    position: 'bottom',
-                    icon: 'error',
-                    title: useItemData.orror,
-                    showConfirmButton: false,
-                    timer: 3000,
-                })
-            }
         }
+
+
+        // await useItemData.setItem(nameItem.value, idItem.value, sku.value, precioUnitario.value, precioVenta.value, cantidad.value, fechaIngreso.value)
+
+
+        // // if (useItemData.clear) {
+        // //     Toast.fire({
+        // //         position: 'bottom',
+        // //         icon: 'success',
+        // //         title: "Item agregado con exito!!!",
+        // //         showConfirmButton: false,
+        // //         timer: 3000,
+        // //     })
+
+        //         nameItem.value = null,
+        //         idItem.value = null,
+        //         sku.value = null,
+        //         precioUnitario.value = null,
+        //         precioVenta.value = null,
+        //         cantidad.value = null,
+        //         fechaIngreso.value = null
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // if (!nameItem.value || !idItem.value || !sku.value || !precioUnitario.value || !precioVenta.value || !
+        //     cantidad.value || !fechaIngreso.value) {
+
+        //     Toast.fire({
+        //         position: 'bottom',
+        //         icon: 'error',
+        //         title: "Debe llenar todos los campos",
+        //         showConfirmButton: false,
+        //         timer: 3000,
+        //     })
+
+        // } else {
+
+
+        //     if (useItemData.clear) {
+        //         Toast.fire({
+        //             position: 'bottom',
+        //             icon: 'success',
+        //             title: "Item agregado con exito!!!",
+        //             showConfirmButton: false,
+        //             timer: 3000,
+        //         })
+
+        //         nameItem.value = null,
+        //         idItem.value = null,
+        //         sku.value = null,
+        //         precioUnitario.value = null,
+        //         precioVenta.value = null,
+        //         cantidad.value = null,
+        //         fechaIngreso.value = null
+
+        //     }
+
+        //     if(useItemData.orror){
+        //         Toast.fire({
+        //             position: 'bottom',
+        //             icon: 'error',
+        //             title: useItemData.orror,
+        //             showConfirmButton: false,
+        //             timer: 3000,
+        //         })
+        //     }
+        // }
+
+
 
 
         // console.log(nameItem.value, idItem.value, sku.value, precioUnitario.value, precioVenta.value,
@@ -148,7 +240,7 @@
         // console.log(useItemData.clear)
 
 
-    }
+
 </script>
 
 <style scoped>
