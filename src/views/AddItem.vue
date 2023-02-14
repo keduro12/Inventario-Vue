@@ -7,18 +7,18 @@
                         <form class="row g-3 needs-validation" novalidate @submit.prevent="handleSubmit()">
                             <div class="col-md-6">
                                 <label for="validationCustom01" class="form-label">Nombre Item</label> 
-                                <input type="text" class="form-control" id="validationCustom01" v-model.trim="nameItem" required>
+                                <input type="text" class="form-control" id="validationCustom01" v-model.trim="formData.nameItem" required>
                                 <span v-for="error in v$.nameItem.$errors" :key="error.$uid">{{ error.$message }}</span>                                                                
                             </div>
                             <div class="col-md-3">
                                 <label for="validationCustom02" class="form-label">Id Item</label>
-                                <input type="text" class="form-control" id="validationCustom02" v-model.trim="idItem" required>
+                                <input type="text" class="form-control" id="validationCustom02" v-model.trim="formData.idItem" required>
                                     <span v-for="error in v$.idItem.$errors" :key="error.$uid">{{ error.$message }}</span> 
                             </div>
                             <div class="col-md-3">
                                 <label for="validationCustomUsername" class="form-label">Codigo Item</label>
                                 <div class="input-group has-validation">
-                                    <input type="text" class="form-control" id="validationCustomUsername" v-model.trim="sku" aria-describedby="inputGroupPrepend" required>
+                                    <input type="text" class="form-control" id="validationCustomUsername" v-model.trim="formData.sku" aria-describedby="inputGroupPrepend" required>
                                     
                                 </div>
                                 <span v-for="error in v$.sku.$errors" :key="error.$uid">{{ error.$message }}</span> 
@@ -26,24 +26,24 @@
                             <div class="col-md-4">
                                 <label for="validationCustom03" class="form-label">Precio unitario</label>
                                 <input type="text" class="form-control" id="validationCustom03"
-                                    v-model.trim="precioUnitario" required>
+                                    v-model.trim="formData.precioUnitario" required>
                                     <span v-for="error in v$.precioUnitario.$errors" :key="error.$uid">{{ error.$message }}</span> 
                                 </div>
                             <div class="col-md-4">
                                 <label for="validationCustom04" class="form-label">Precio Venta</label>
-                                <input class="form-control" id="validationCustom04" v-model.trim="precioVenta" required>
+                                <input class="form-control" id="validationCustom04" v-model.trim="formData.precioVenta" required>
                                 <span v-for="error in v$.precioVenta.$errors" :key="error.$uid">{{ error.$message }}</span> 
                             </div>
                             <div class="col-md-3">
                                 <label for="validationCustom05" class="form-label">Cantidad</label>
-                                <input type="text" class="form-control" id="validationCustom05" v-model.trim="cantidad"
+                                <input type="text" class="form-control" id="validationCustom05" v-model.trim="formData.cantidad"
                                     required>
                                     <span v-for="error in v$.cantidad.$errors" :key="error.$uid">{{ error.$message }}</span> 
                             </div>
                             <div class="col-md-5">
                                 <label for="validationCustom05" class="form-label">Fecha de ingreso</label>
                                 <input type="date" class="form-control" id="validationCustom05"
-                                    v-model.trim="fechaIngreso" required>
+                                    v-model.trim="formData.fechaIngreso" required>
                                     <span v-for="error in v$.fechaIngreso.$errors" :key="error.$uid">{{ error.$message }}</span> 
                                 </div>
 
@@ -67,7 +67,7 @@
     import {
         useVuelidate
     } from '@vuelidate/core'
-    import { required } from '@vuelidate/validators'
+    import { required, email, helpers } from '@vuelidate/validators'
     import {
         itemDatabase
     } from "@/store/itemDatabase.js"
@@ -105,13 +105,13 @@
     })
 
     const rules = {
-        nameItem: { required},
-        idItem: { required },
-        sku: { required },
-        precioUnitario: { required },
-        precioVenta: { required },
-        cantidad: { required },
-        fechaIngreso: { required },
+        nameItem: { required: helpers.withMessage("Debe ingresar el nombre del producto", required)},
+        idItem: { required: helpers.withMessage("Debe ingresar el nombre del producto", required)},
+        sku: { required: helpers.withMessage("Debe ingresar el SKU del producto", required)},
+        precioUnitario: { required: helpers.withMessage("Debe ingresar el precio unitario del producto", required)},
+        precioVenta: { required: helpers.withMessage("Debe ingresar el precio del venta de producto", required)},
+        cantidad: { required: helpers.withMessage("Debe ingresar la cantidad de productos", required)},
+        fechaIngreso: { required: helpers.withMessage("Debe ingresar la fecha de ingreso", required)},
     }
 
     const v$ = useVuelidate(rules, formData)
@@ -119,127 +119,13 @@
     const handleSubmit = async () => {
 
         const result = await v$.value.$validate()
-
-        console.log(v$ + " .... " + result)
-
         if(result){
-            await useItemData.setItem(nameItem.value, idItem.value, sku.value, precioUnitario.value, precioVenta.value, cantidad.value, fechaIngreso.value)
-            alert("formulario exitoso")
+            await useItemData.setItem(formData.nameItem, formData.idItem, formData.sku, formData.precioUnitario, formData.precioVenta, formData.cantidad, formData.fechaIngreso)
         }else{
             alert("formulario fallo")
 
         }
-
-
-        await useItemData.setItem(nameItem.value, idItem.value, sku.value, precioUnitario.value, precioVenta.value, cantidad.value, fechaIngreso.value)
-
-
-        // // if (useItemData.clear) {
-        // //     Toast.fire({
-        // //         position: 'bottom',
-        // //         icon: 'success',
-        // //         title: "Item agregado con exito!!!",
-        // //         showConfirmButton: false,
-        // //         timer: 3000,
-        // //     })
-
-        //         nameItem.value = null,
-        //         idItem.value = null,
-        //         sku.value = null,
-        //         precioUnitario.value = null,
-        //         precioVenta.value = null,
-        //         cantidad.value = null,
-        //         fechaIngreso.value = null
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        // if (!nameItem.value || !idItem.value || !sku.value || !precioUnitario.value || !precioVenta.value || !
-        //     cantidad.value || !fechaIngreso.value) {
-
-        //     Toast.fire({
-        //         position: 'bottom',
-        //         icon: 'error',
-        //         title: "Debe llenar todos los campos",
-        //         showConfirmButton: false,
-        //         timer: 3000,
-        //     })
-
-        // } else {
-
-
-        //     if (useItemData.clear) {
-        //         Toast.fire({
-        //             position: 'bottom',
-        //             icon: 'success',
-        //             title: "Item agregado con exito!!!",
-        //             showConfirmButton: false,
-        //             timer: 3000,
-        //         })
-
-        //         nameItem.value = null,
-        //         idItem.value = null,
-        //         sku.value = null,
-        //         precioUnitario.value = null,
-        //         precioVenta.value = null,
-        //         cantidad.value = null,
-        //         fechaIngreso.value = null
-
-        //     }
-
-        //     if(useItemData.orror){
-        //         Toast.fire({
-        //             position: 'bottom',
-        //             icon: 'error',
-        //             title: useItemData.orror,
-        //             showConfirmButton: false,
-        //             timer: 3000,
-        //         })
-        //     }
-        // }
-
-
-
-
-        // console.log(nameItem.value, idItem.value, sku.value, precioUnitario.value, precioVenta.value,
-        //     cantidad.value, fechaIngreso.value)
-        // console.log(useItemData.clear)
-
-
-
+    }
 </script>
 
 <style scoped>
