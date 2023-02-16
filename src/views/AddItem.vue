@@ -61,6 +61,9 @@
                             <div class="col-12 centrado">
                                 <button class="btn btn-primary" type="submit">Agregar</button>
                             </div>
+                            <div class="col-12 centrado">
+                                <button class="btn btn-primary" type="submit">clear</button>
+                            </div>
                         </form>
 
                         <!-- <FormularioData :nameItem="nameItem" :idItem="idItem"  :sku="sku" :precioUnitario="precioUnitario" :precioVenta="precioVenta" :cantidad="cantidad" :fechaIngreso="fechaIngreso" 
@@ -93,7 +96,7 @@
     import {
         ref,
         computed,
-        reactive
+        reactive, nextTick 
     } from "vue"
     import Swal from "sweetalert2";
 
@@ -124,18 +127,17 @@
     }
 
 
-    const formData = reactive(
-        resetForm()
-        // nameItem: "",
-        // idItem: "",
-        // sku: "",
-        // precioUnitario: "",
-        // precioVenta: "",
-        // cantidad: "",
-        // fechaIngreso: "",
-    )
-
-    const resetUserForm = () => Object.assign(formData, resetForm())
+    const formData = reactive({
+        // resetForm()
+        nameItem: "",
+        idItem: "",
+        sku: "",
+        precioUnitario: "",
+        precioVenta: "",
+        cantidad: "",
+        fechaIngreso: "",
+    })
+    // const resetUserForm = () => Object.assign(formData, resetForm())
 
 
     
@@ -168,6 +170,8 @@
 
     const v$ = useVuelidate(rules, formData)
 
+
+
     const handleSubmit = async () => {
 
         const result = await v$.value.$validate()
@@ -178,25 +182,20 @@
             await useItemData.setItem(formData.nameItem, formData.idItem, formData.sku, formData.precioUnitario,
                 formData.precioVenta, formData.cantidad, formData.fechaIngreso)
 
-                resetUserForm();
-
-                // v$.formData.reset();
-
+                // // resetUserForm();
                 // v$.formData = resetForm();
-            // formData.nameItem = "",
-            //     formData.idItem = "",
-            //     formData.sku = "",
-            //     formData.precioUnitario = "",
-            //     formData.precioVenta = "",
-            //     formData.cantidad = "",
-            //     formData.fechaIngreso = ""
-            // console.log(v$.formData = resetForm())
+
+                // // console.log( v$.formData = resetForm())
+
+                // v$.value.$reset();
+                // // setTimeout(() => { v$.value.$reset() }, 0)
+
+                // // nextTick(() => { v$.value.$reset() })
 
 
             console.log( v$.formData + " aaa")
 
-
-
+        
         } else {
             console.log("formulario fallo")
         }
