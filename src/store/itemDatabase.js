@@ -8,13 +8,17 @@ export const itemDatabase = defineStore("item", {
         documents: [],
         clear: false,
         orror: false,
+        result : null,
+        loader: false
     }),
 
 
     actions: {
         async getItems(){
+            this.loader = true;
 
             if(this.documents.length !== 0){
+                this.loader = false
                 return;
             }
 
@@ -29,6 +33,7 @@ export const itemDatabase = defineStore("item", {
                     // console.log(doc.id, doc.data())
                     
                 })
+                this.loader = false
 
             } catch (error) {
                 console.log(error)
@@ -51,6 +56,12 @@ export const itemDatabase = defineStore("item", {
                     user: auth.currentUser.uid
                 };
                 const docRef = await addDoc(collection(db, "producto"), objectDoc)
+
+                console.log(docRef.id)
+
+                this.result = docRef.id;
+
+                console.log(this.result + "  ef")
 
 
                 // console.log(docRef)

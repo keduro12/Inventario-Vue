@@ -156,7 +156,12 @@
                     </tfoot>
                 </table>
             </div>
+                <div class="card loader radius-10" v-show="useItem.loader">
+                <div class="spinner-border spinner-border-sm" role="status">
         </div>
+            </div>
+        </div>
+        
     </div>
 </template>
 
@@ -235,4 +240,25 @@
     .cursorPointer {
         cursor: pointer;
     }
+
+    .spinner-border {
+    color: #212529;
+    width: 100px;
+    height: 100px;
+  }
+
+  .loader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.5);
+    align-items: center;
+    size: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
 </style>
