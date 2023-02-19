@@ -81,6 +81,14 @@ export const itemDatabase = defineStore("item", {
             try {
                 const docRef = doc(db, "producto", id)
                 const docSnap = await getDoc(docRef);
+
+                if (!docSnap.exists()) {
+                    throw new Error('Ese documento no existe')
+                }
+
+                if (auth.currentUser.uid !== docSnap.data().user) {
+                    throw new Error("Ese documento no te pertenece")
+                }
                 
                 return{
                     nameItem: docSnap.data().nameItem,
@@ -91,17 +99,6 @@ export const itemDatabase = defineStore("item", {
                     cantidad: docSnap.data().cantidad,
                     fechaIngreso: docSnap.data().fechaIngreso,
                 }
-
-
-                if (!docSnap.exists()) {
-                    throw new Error('Ese documento no existe')
-                }
-
-                if (auth.currentUser.uid !== docSnap.data().user) {
-                    throw new Error("Ese documento no te pertenece")
-                }
-
-
 
             } catch (error) {
 
@@ -152,7 +149,7 @@ export const itemDatabase = defineStore("item", {
 
         async deleteItem(id){
             try {
-                const docRef = await doc(db, "producto", id)
+                const docRef = doc(db, "producto", id)
                 const docSnap = await getDoc(docRef);
 
                 if (!docSnap.exists()) {
@@ -166,7 +163,7 @@ export const itemDatabase = defineStore("item", {
                 const docDelete = await deleteDoc(docRef)
                 this.documents = this.documents.filter(item => item.id !== id)
             } catch (error) {
-                console.log(error.messsage)
+                console.log(error)
             }finally{
                 
             }

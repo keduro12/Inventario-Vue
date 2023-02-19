@@ -77,10 +77,10 @@
 <script setup>
     import FormularioData from "@/components/FormularioData.vue"
     import { useVuelidate } from '@vuelidate/core'
-    import { required,email,helpers,numeric } from '@vuelidate/validators'
+    import { required,helpers,numeric, minLength, maxLength } from '@vuelidate/validators'
     import { itemDatabase } from "@/store/itemDatabase.js"
     import { async } from "@firebase/util";
-    import { ref,computed,reactive } from "vue"
+    import { reactive } from "vue"
     import Swal from "sweetalert2";
 
     const Toast = Swal.mixin({
@@ -113,8 +113,10 @@
             required: helpers.withMessage("Debe ingresar el nombre del producto", required)
         },
         idItem: {
-            required: helpers.withMessage("Debe ingresar el nombre del producto", required),
-            numeric: helpers.withMessage("El valor debe ser numerico", numeric)
+            required: helpers.withMessage("Debe ingresar el Id del producto", required),
+            numeric: helpers.withMessage("El valor debe ser numerico", numeric),
+            maxLength :helpers.withMessage("El id debe tener maximo 10 dijitos",  maxLength(10)),
+            minLength :helpers.withMessage("El id debe tener minimo 10 dijitos",  minLength(10))
         },
         sku: {
             required: helpers.withMessage("Debe ingresar el SKU del producto", required)
@@ -143,6 +145,7 @@
     const handleSubmit = async () => {
 
         const result = await v$.value.$validate()
+        
         if (result) {
 
             await useItemData.setItem(formData.nameItem, formData.idItem, formData.sku, formData.precioUnitario,
@@ -158,11 +161,7 @@
 
             v$.value.$reset();
 
-        } else {
-            console.log("formulario fallo")
-        }
-
-        if (useItemData.result) {
+            if (useItemData.result) {
                 Toast.fire({
                     position: 'bottom',
                     icon: 'success',
@@ -171,6 +170,11 @@
                     timer: 3000,
                 })
             }
+
+        } else {
+            console.log("formulario fallo")
+        }
+        
     }
 </script>
 
