@@ -38,11 +38,11 @@
                                 <div class="col-12 col-lg-12">
                                     <div
                                         class="social-login d-flex flex-row align-items-center justify-content-center gap-2 my-2">
-                                        <a href="javascript:;" class=""><img src="assets/images/icons/facebook.png"
+                                        <a href="javascript:;" class=""><img src="/assets/images/icons/facebook.png"
                                                 alt=""></a>
                                         <a href="javascript:;" class=""><img
-                                                src="assets/images/icons/apple-black-logo.png" alt=""></a>
-                                        <a href="javascript:;" class=""><img src="assets/images/icons/google.png"
+                                                src="/assets/images/icons/apple-black-logo.png" alt=""></a>
+                                        <a href="javascript:;" class=""><img src="/assets/images/icons/google.png"
                                                 alt=""></a>
                                     </div>
                                 </div>

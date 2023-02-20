@@ -12,7 +12,6 @@ export const itemDatabase = defineStore("item", {
         loader: false
     }),
 
-
     actions: {
         async getItems(){
             this.loader = true;
@@ -57,11 +56,8 @@ export const itemDatabase = defineStore("item", {
                 };
                 const docRef = await addDoc(collection(db, "producto"), objectDoc)
 
-                console.log(docRef.id)
-
                 this.result = docRef.id;
 
-                console.log(this.result + "  ef")
 
 
                 // console.log(docRef)
