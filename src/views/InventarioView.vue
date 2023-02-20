@@ -24,8 +24,7 @@
                             <td>{{ item.precioVenta }}</td>
                             <td>{{ item.cantidad }}</td>
                             <td>{{ item.fechaIngreso }}</td>
-                            <td>{{ item.id }}</td>
-
+                            
                             <div class="card-body centericonos">
                                 <i class="cursorPointer mx-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
                                     @click="handleSubmit(sustitito = item.id)">
@@ -196,7 +195,7 @@
 
     const handleSubmit = async (id) => {
 
-        const { nameItem, idItem, sku, precioUnitario, recioVenta, cantidad, fechaIngreso } = await useItem.showItem(id)
+        const { nameItem, idItem, sku, precioUnitario, precioVenta, cantidad, fechaIngreso } = await useItem.showItem(id)
 
         nameItem_1.value = nameItem,
         idItem_1.value = idItem,
@@ -223,7 +222,6 @@
 
     const deleteItem = async (id) => {
         await useItem.deleteItem(id)
-
 
         Toast.fire({
             position: 'bottom',

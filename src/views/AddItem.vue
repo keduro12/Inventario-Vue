@@ -75,7 +75,6 @@
 </template>
 
 <script setup>
-    import FormularioData from "@/components/FormularioData.vue"
     import { useVuelidate } from '@vuelidate/core'
     import { required,helpers,numeric, minLength, maxLength } from '@vuelidate/validators'
     import { itemDatabase } from "@/store/itemDatabase.js"

@@ -23,7 +23,7 @@ export const itemDatabase = defineStore("item", {
             }
 
             try {
-                const q = query(collection(db, "producto"), where("user", "==", auth.currentUser.uid))
+                const q = query(collection(db, "producto"), where("user", "==", auth.currentUser.uid));
                 const querySnapshot = await getDocs(q);
                 querySnapshot.forEach((doc) =>{
                     this.documents.push({
