@@ -1,16 +1,19 @@
 import { defineStore } from "pinia";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "firebase/auth";
-import { auth } from "@/firebaseConfig";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile  } from "firebase/auth";
+import { auth, db, storage } from "@/firebaseConfig";
 import router from "@/router";
 import {itemDatabase} from "@/store/itemDatabase.js"
+import { doc, getDoc, setDoc } from "firebase/firestore/lite";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 
 export const useUserStore = defineStore('user', {
     state: () => ({
         userData: null,
-        orror: null,
-        curentUser: null
-
+        curentUser: null,
+        aemail: null,
+        adisplayName: null,
+        aphotoURL: null,
     }),
 
     getters: {
@@ -22,7 +25,7 @@ export const useUserStore = defineStore('user', {
             try {
                 const createUser = await createUserWithEmailAndPassword(auth, email, password)
                 const respuesta = createUser.user
-                console.log(respuesta);
+
                 this.userData = {
                     email: respuesta.email,
                     uid: respuesta.uid
@@ -33,7 +36,29 @@ export const useUserStore = defineStore('user', {
 
             } catch (error) {
                 console.log(error)
-                this.orror = error.code;
+
+                return error.code
+            }
+        },
+
+        async setUser(user){
+            try {
+                const docRef = doc(db, "users", user.uid);
+
+                this.userData = {
+                    email: user.email,
+                    uid: user.uid,
+                    displayName: user.displayName,
+                    photoURL: user.photoURL
+                }
+
+
+                await setDoc(docRef, this.userData)
+                
+            } catch (error) {
+                console.log(error)
+
+                return error.code
             }
         },
 
@@ -41,7 +66,9 @@ export const useUserStore = defineStore('user', {
             try {
                 const Sesion = await signInWithEmailAndPassword(auth, email, password)
                 const respuesta = Sesion.user;
-                console.log(respuesta);
+                
+
+                await this.setUser(respuesta)
                 this.userData = {
                     email: respuesta.email,
                     uid: respuesta.uid
@@ -51,9 +78,31 @@ export const useUserStore = defineStore('user', {
 
             } catch (error) {
                 console.log(error)
-                this.orror = error.code;
 
-                console.log(error.code + " este fue el error")
+                return error.code
+            }
+        },
+
+        async updateUser(displayName, imagen){
+            try {
+                if(imagen){
+                    const storageRef = ref(storage, `perfiles/${this.userData.uid}`)
+                    await uploadBytes(storageRef, imagen)
+                    const photoURL = await getDownloadURL(storageRef)
+                    await updateProfile(auth.currentUser, {
+                        photoURL: photoURL,
+                    })
+                }
+
+                await updateProfile(auth.currentUser, {
+                    displayName: displayName,
+                })
+                this.setUser(auth.currentUser);
+
+            } catch (error) {
+                console.log(error)
+
+                return error.code
             }
         },
 
@@ -62,37 +111,39 @@ export const useUserStore = defineStore('user', {
             useDataBase.$reset();
 
             try {
+                
                 await signOut(auth);
                 this.userData = null;
                 router.push("/login")
+
             } catch (error) {
                 console.log(error);
-                this.orror = error.code;
+
+                return error.code
             }
         },
 
         currentUser() {
 
-            // onAuthStateChanged (auth, (user)=>{
-            //     if (user) {
-            //         this.curentUser = user.uid;
-            //         console.log(this.curentUser + "Usuario ss")
-            //         console.log("Usuario autenticado")
-
-            //         return console.log(user);
-            //     }else{
-            //         console.log("Usuario denegado")
-            //     }
-            // })
             return new Promise((resolve, reject) => {
-                const unsuscribe = onAuthStateChanged(auth, user => {
+                const unsuscribe = onAuthStateChanged(auth, async user => {
+                    console.log(this.userData)
                     if (user) {
+                        await this.setUser(user)
                         this.userData = {
                             email: user.email,
-                            uid: user.uid
-                        }
+                            uid: user.uid,
+                            displayName: user.displayName,
+                            photoURL: user.photoURL
+                        };
+
+                        this.aemail = this.userData.email;
+                        this.adisplayName = this.userData.displayName;
+                        this.aphotoURL = this.userData.photoURL;
+                        console.log(this.userData)
                     } else {
                         this.userData = null;
+                        console.log(this.userData)
                     }
                     resolve(user);
                 }, e => reject(e))

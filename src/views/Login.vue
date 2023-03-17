@@ -12,11 +12,13 @@
               <form class="form-body row g-3" @submit.prevent="handleSubmit">
                 <div class="col-12">
                   <label for="inputEmail" class="form-label">Correo</label>
-                  <input type="email" class="form-control" id="inputEmail" v-model.trim="email">
+                  <input type="email" class="form-control" id="inputEmail" v-model.trim="formData.email">
+                  <span class="letra" v-for="error in v$.email.$errors">{{ error.$message }}</span>
                 </div>
                 <div class="col-12">
                   <label for="inputPassword" class="form-label">Contraseña</label>
-                  <input type="password" class="form-control" id="inputPassword" v-model.trim="password">
+                  <input type="password" class="form-control" id="inputPassword" v-model.trim="formData.password">
+                  <span class="letra" v-for="error in v$.password.$errors">{{ error.$message }}</span>
                 </div>
                 <div class="col-12 col-lg-6">
                   <div class="form-check form-switch">
@@ -66,18 +68,28 @@
 <script setup>
   import Swal from "sweetalert2"
   import {
+    useVuelidate
+  } from '@vuelidate/core'
+  import {
+    required,
+    helpers,
+    minLength,
+    email
+  } from '@vuelidate/validators'
+
+  import {
     useUserStore
   } from "@/store/user.js"
   import {
-    useRoute,
     useRouter
   } from "vue-router";
   import {
-    ref
+    reactive
   } from 'vue'
   import {
     async
   } from "@firebase/util";
+
 
 
   const Toast = Swal.mixin({
@@ -90,46 +102,71 @@
       toast.addEventListener('mouseenter', Swal.stopTimer)
       toast.addEventListener('mouseleave', Swal.resumeTimer)
     }
-  })
-
-  const email = ref();
-  const password = ref();
+  });
 
   const userStore = useUserStore();
   const router = useRouter();
 
+  const formData = reactive({
+    email: "",
+    password: ""
+  });
+
+
+  const rules = {
+    email: {
+      required: helpers.withMessage("Debe ingresar un email", required),
+      email: helpers.withMessage("Debe ingresar un Email Valido", email)
+    },
+    password: {
+      required: helpers.withMessage("Debe ingresar la contraseña", required),
+      minLength: helpers.withMessage("La contraseña debe contener mas de 5 caracteres", minLength(6))
+    }
+  };
+
+  const v$ = useVuelidate(rules, formData, {
+    $lazy: true
+  });
+
+
+
   const handleSubmit = async () => {
 
-    if (!email.value || !password.value) {
-      Toast.fire({
-        position: 'bottom',
-        icon: 'error',
-        title: "Debe llenar los campos",
-        showConfirmButton: false,
-        timer: 3000,
-      })
+    const result = await v$.value.$validate();
 
-    } else {
-      await userStore.startSesion(email.value, password.value)
+    if (result) {
 
-      if (userStore.orror == "auth/wrong-password") {
+      const error = await userStore.startSesion(formData.email, formData.password)
+
+      if (!error) {
         Toast.fire({
           position: 'bottom',
-          icon: 'error',
-          title: "Contraseña incorrecta",
+          icon: 'success',
+          title: "Sesión Iniciada",
           showConfirmButton: false,
           timer: 3000,
         })
-      }
 
-      if (userStore.orror == "auth/user-not-found") {
-        Toast.fire({
-          position: 'bottom',
-          icon: 'error',
-          title: "Este usuario no se encuentra registrado",
-          showConfirmButton: false,
-          timer: 3000,
-        })
+      } else {
+        if (error === "auth/wrong-password") {
+          Toast.fire({
+            position: 'bottom',
+            icon: 'error',
+            title: "Contraseña incorrecta",
+            showConfirmButton: false,
+            timer: 3000,
+          })
+        }
+
+        if (error == "auth/user-not-found") {
+          Toast.fire({
+            position: 'bottom',
+            icon: 'error',
+            title: "Este usuario no se encuentra registrado",
+            showConfirmButton: false,
+            timer: 3000,
+          })
+        }
       }
 
     }
@@ -139,5 +176,16 @@
 <style scoped>
   .login {
     margin-top: 150px;
+  }
+
+
+  .letra {
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    color: red;
+    opacity: 50%;
+    margin-top: 5px;
+
   }
 </style>

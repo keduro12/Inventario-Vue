@@ -1,7 +1,6 @@
 import { addDoc, collection, deleteDoc, doc, getDocs, query, where, getDoc, updateDoc } from "firebase/firestore/lite"
 import {defineStore} from "pinia"
-import { db } from "@/firebaseConfig"
-import { auth } from "@/firebaseConfig"
+import { db, auth } from "@/firebaseConfig"
 
 export const itemDatabase = defineStore("item", {
     state: () => ({
@@ -68,6 +67,7 @@ export const itemDatabase = defineStore("item", {
             } catch (error) {
                 this.orror = error.code
                 console.log(error)
+                
             }finally{
                 this.clear = true;
             }

@@ -43,37 +43,22 @@
                 </li>
                 <li class="menu-label">UI Elements</li>                
                 <li>
-                    <a href="pages-user-profile.html">
+                    <router-link to="/profile">
                         <div class="parent-icon">
                             <ion-icon name="person-circle-sharp"></ion-icon>
                         </div>
-                        <div class="menu-title">User Profile</div>
-                    </a>
+                        <div class="menu-title">Perfil de Usuario</div>
+                    </router-link>
                 </li>  
                 <li>
                     <a href="pages-edit-profile.html">
                         <div class="parent-icon">
                             <ion-icon name="create-sharp"></ion-icon>
                         </div>
-                        <div class="menu-title" >Edit Profile</div>
+                        <div class="menu-title" >Editar Perfil</div>
                     </a>
                 </li>             
-            </ul>
-
-            <!-- <div>
-                <ul  class="metismenu">
-                    <li>
-                    <a href="pages-edit-profile.html" id="abajo">
-                        <div class="parent-icon">
-                            <ion-icon name="create-sharp"></ion-icon>
-                        </div>
-                        <div class="menu-title" >Edit Profile</div>
-                    </a>
-                </li>  
-                </ul>
-            </div> -->
-
-            
+            </ul>         
 
             <!--end navigation-->
         </aside>
@@ -177,19 +162,19 @@
                             <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="javascript:;"
                                 data-bs-toggle="dropdown">
                                 <div class="user-setting">
-                                    <img src="/assets/images/avatars/06.png" class="user-img" alt="">
+                                    <img :src="userStore.aphotoURL" class="user-img" alt="">
                                 </div>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end">
                                 <li>
                                     <a class="dropdown-item" href="javascript:;">
                                         <div class="d-flex flex-row align-items-center gap-2">
-                                            <img src="/assets/images/avatars/06.png" alt="" class="rounded-circle"
+                                            <img :src="userStore.aphotoURL" alt="" class="rounded-circle"
                                                 width="54" height="54">
                                             <div class="">
-                                                <h6 class="mb-0 dropdown-user-name">Jhon Deo</h6>
-                                                <small class="mb-0 dropdown-user-designation text-secondary">UI
-                                                    Developer</small>
+                                                <h6 class="mb-0 dropdown-user-name">{{userStore.adisplayName}}</h6>
+                                                <!-- <small class="mb-0 dropdown-user-designation text-secondary">UI
+                                                    Developer</small> -->
                                             </div>
                                         </div>
                                     </a>
@@ -198,8 +183,8 @@
                                     <hr class="dropdown-divider">
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="javascript:;">
-                                        <div class="d-flex align-items-center">
+                                    <a class="dropdown-item" @click="router.push('/profile')">
+                                        <div class="d-flex align-items-center" >
                                             <div class="">
                                                 <ion-icon name="person-outline"></ion-icon>
                                             </div>
@@ -262,7 +247,10 @@
 
 <script setup>
 import {useUserStore} from "@/store/user.js"
+import {useRouter} from "vue-router"
+
 const userStore = useUserStore()
+const router = useRouter();
 
 
 </script>
